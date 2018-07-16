@@ -2,6 +2,8 @@ outputs*
 outputs/*
 *.swp
 *.pyc
+data/cifar*
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
