@@ -213,9 +213,9 @@ def get_ops(images, labels):
 
 
 def train():
-  if FLAGS.child_fixed_arc is None:
+  if FLAGS.child_fixed_arc is None: # No child architecture given, validation data needed to choose best architecture
     images, labels = read_data(FLAGS.data_path)
-  else:
+  else: # If architecture is given, use all data for training.
     images, labels = read_data(FLAGS.data_path, num_valids=0)
 
   g = tf.Graph()

@@ -7,7 +7,7 @@ from src.common_ops import create_bias
 
 
 def drop_path(x, keep_prob):
-  """Drops out a whole example hiddenstate with the specified probability."""
+  """Drops out a whole example hidden state with the specified probability."""
 
   batch_size = tf.shape(x)[0]
   noise_shape = [batch_size, 1, 1, 1]
