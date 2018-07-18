@@ -76,3 +76,38 @@ def read_data(data_path, num_valids=5000):
   images["test"] = (images["test"] - mean) / std
 
   return images, labels
+
+def read_data_surveillance(images,labels, num_valids=5000):
+  '''
+  :params images: images dictionary
+  :params labels: labels dictionary
+  :params num_valids: Number of data to be used for validation
+  :returns images: dictionary with key 'train', 'valid', 'test'. The values are the images
+  :returns labels: dictionary with key 'train', 'valid', 'test'. The values are the corresponding labels
+  '''
+  print "-" * 80
+  print "Reading data"
+
+  if num_valids: # Separate data into training and validation
+    images["valid"] = images["train"][-num_valids:]
+    labels["valid"] = labels["train"][-num_valids:]
+
+    images["train"] = images["train"][:-num_valids]
+    labels["train"] = labels["train"][:-num_valids]
+  else: # Skip validation data
+    images["valid"], labels["valid"] = None, None
+
+  print "Preprocess: [subtract mean], [divide std]"
+  mean = np.mean(images["train"], axis=(0, 1, 2), keepdims=True)
+  std = np.std(images["train"], axis=(0, 1, 2), keepdims=True)
+
+  print "mean: {}".format(np.reshape(mean * 255.0, [-1]))
+  print "std: {}".format(np.reshape(std * 255.0, [-1]))
+
+  # Normalise images based on training images
+  images["train"] = (images["train"] - mean) / std
+  if num_valids:
+    images["valid"] = (images["valid"] - mean) / std
+  images["test"] = (images["test"] - mean) / std
+
+  return images,labels
