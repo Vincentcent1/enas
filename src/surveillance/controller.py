@@ -104,7 +104,7 @@ class ConvController(Controller):
         next_c, next_h = stack_lstm(inputs, prev_c, prev_h, self.w_lstm)
         all_h.append(tf.stop_gradient(next_h[-1]))
 
-        logits = tf.matmul(next_h[-1], self.w_soft)
+        logits = tf.matmul(next_h[-1], self.w_soft) # LSTM output indicating the next operation or id to be chosen
         if self.temperature is not None:
           logits /= self.temperature
         if self.tanh_constant is not None:

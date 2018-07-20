@@ -213,10 +213,43 @@ def get_ops(images, labels):
 
 
 def train():
+  # Load pickles file
+  with open('../pickleRick/allCrops1.pkl') as p_crop:
+      allCrops1 = cPickle.load(p_crop)
+  # with open('../pickleRick/allCrops2.pkl') as p_crop:
+  #     allCrops2 = cPickle.load(p_crop)
+  # with open('../pickleRick/allCrops3.pkl') as p_crop:
+  #     allCrops3 = cPickle.load(p_crop)    
+  # with open('../pickleRick/brio1/allCrops1.pkl') as p_crop:
+  #     allCrops1_Brio1 = cPickle.load(p_crop)
+  # with open('../pickleRick/brio1/allCrops2.pkl') as p_crop:
+  #     allCrops2_Brio1 = cPickle.load(p_crop)
+  # with open('../pickleRick/brio2/allCrops1.pkl') as p_crop:
+  #     allCrops1_Brio2 = cPickle.load(p_crop)
+
+  with open('../pickleRick/labels.pkl','r') as p_crop:
+    labels1 = cPickle.load(p_crop)
+    # labels2 = cPickle.load(p_crop)
+    # labels3 = cPickle.load(p_crop)    
+    # labels1_Brio1 = cPickle.load(p_crop)
+    # labels1_Brio2 = cPickle.load(p_crop)
+    # labels2_Brio1 = cPickle.load(p_crop)
+  
+  # Prepare and divide data
+  autoTrainNN = AutoTrain()
+  # combined_1 = zip(allCrops1 + allCrops2, np.concatenate((labels1,labels2)))
+  autoTrainNN.addLabelledData(zip(allCrops1,labels1))
+
+  # combined_2 = zip(allCrops3 + allCrops1_Brio1, np.concatenate((labels3,labels1_Brio1)))
+  # autoTrainNN.addLabelledData(combined_2)
+
+  # combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
+  # autoTrainNN.addLabelledData(combined_3)
+
   if FLAGS.child_fixed_arc is None: # No child architecture given, validation data needed to choose best architecture
-    images, labels = read_data(FLAGS.data_path)
+    images, labels = read_data_surveillance(autoTrainNN)
   else: # If architecture is given, use all data for training.
-    images, labels = read_data(FLAGS.data_path, num_valids=0)
+    images, labels = read_data_surveillance(autoTrainNN, num_valids=0)
 
   g = tf.Graph()
   with g.as_default():
@@ -308,8 +341,8 @@ def train():
               print("Here are 10 architectures")
               for _ in range(10):
                 arc, acc = sess.run([
-                  controller_ops["sample_arc"],
-                  controller_ops["valid_acc"],
+                  controller_ops["sample_arc"], # Run validation on sampled architecture
+                  controller_ops["valid_acc"], # Get validation acc
                 ])
                 if FLAGS.search_for == "micro":
                   normal_arc, reduce_arc = arc
