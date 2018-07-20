@@ -77,10 +77,9 @@ def read_data(data_path, num_valids=5000):
 
   return images, labels
 
-def read_data_surveillance(images,labels, num_valids=5000):
+def read_data_surveillance(autoTrain, num_valids=5000):
   '''
-  :params images: images dictionary
-  :params labels: labels dictionary
+  :params autoTrain: instance of AutoTrain class with data filled
   :params num_valids: Number of data to be used for validation
   :returns images: dictionary with key 'train', 'valid', 'test'. The values are the images
   :returns labels: dictionary with key 'train', 'valid', 'test'. The values are the corresponding labels
@@ -89,13 +88,15 @@ def read_data_surveillance(images,labels, num_valids=5000):
   print "Reading data"
 
   if num_valids: # Separate data into training and validation
-    images["valid"] = images["train"][-num_valids:]
-    labels["valid"] = labels["train"][-num_valids:]
+    images["train"],labels["train"] = zip(*autoTrain.train)
+    images["valid"],labels["valid"] = zip(*autoTrain.val)
 
-    images["train"] = images["train"][:-num_valids]
-    labels["train"] = labels["train"][:-num_valids]
   else: # Skip validation data
-    images["valid"], labels["valid"] = None, None
+    images["train"],labels["train"] = zip(*autoTrain.train)
+    images["valid"],labels["valid"] = zip(*autoTrain.val)
+    images["train"],labels["train"] = images["train"] + images["valid"], labels["train"] + labels["valid"]
+
+  images["test"],labels["test"] = zip(*autoTrain.test)
 
   print "Preprocess: [subtract mean], [divide std]"
   mean = np.mean(images["train"], axis=(0, 1, 2), keepdims=True)
