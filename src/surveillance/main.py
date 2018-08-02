@@ -19,12 +19,18 @@ from src.utils import DEFINE_integer
 from src.utils import DEFINE_string
 from src.utils import print_user_flags
 
-from src.cifar10.data_utils import read_data
-from src.cifar10.general_controller import GeneralController
-from src.cifar10.general_child import GeneralChild
+from src.surveillance.data_utils import read_data_surveillance
+from src.surveillance.general_controller import GeneralController
+from src.surveillance.general_child import GeneralChild
 
-from src.cifar10.micro_controller import MicroController
-from src.cifar10.micro_child import MicroChild
+from src.surveillance.micro_controller import MicroController
+from src.surveillance.micro_child import MicroChild
+
+# autoTrain modules
+sys.path.insert(0,'/home/yuwei/projects/vincent/autoTrain')
+from autoTrain import AutoTrain
+import cPickle
+
 
 flags = tf.app.flags
 FLAGS = flags.FLAGS
@@ -212,40 +218,8 @@ def get_ops(images, labels):
   return ops
 
 
-def train():
-  # Load pickles file
-  with open('../pickleRick/allCrops1.pkl') as p_crop:
-      allCrops1 = cPickle.load(p_crop)
-  # with open('../pickleRick/allCrops2.pkl') as p_crop:
-  #     allCrops2 = cPickle.load(p_crop)
-  # with open('../pickleRick/allCrops3.pkl') as p_crop:
-  #     allCrops3 = cPickle.load(p_crop)    
-  # with open('../pickleRick/brio1/allCrops1.pkl') as p_crop:
-  #     allCrops1_Brio1 = cPickle.load(p_crop)
-  # with open('../pickleRick/brio1/allCrops2.pkl') as p_crop:
-  #     allCrops2_Brio1 = cPickle.load(p_crop)
-  # with open('../pickleRick/brio2/allCrops1.pkl') as p_crop:
-  #     allCrops1_Brio2 = cPickle.load(p_crop)
-
-  with open('../pickleRick/labels.pkl','r') as p_crop:
-    labels1 = cPickle.load(p_crop)
-    # labels2 = cPickle.load(p_crop)
-    # labels3 = cPickle.load(p_crop)    
-    # labels1_Brio1 = cPickle.load(p_crop)
-    # labels1_Brio2 = cPickle.load(p_crop)
-    # labels2_Brio1 = cPickle.load(p_crop)
-  
-  # Prepare and divide data
-  autoTrainNN = AutoTrain()
-  # combined_1 = zip(allCrops1 + allCrops2, np.concatenate((labels1,labels2)))
-  autoTrainNN.addLabelledData(zip(allCrops1,labels1))
-
-  # combined_2 = zip(allCrops3 + allCrops1_Brio1, np.concatenate((labels3,labels1_Brio1)))
-  # autoTrainNN.addLabelledData(combined_2)
-
-  # combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
-  # autoTrainNN.addLabelledData(combined_3)
-
+def train(autoTrainNN):
+  best = None, 0
   if FLAGS.child_fixed_arc is None: # No child architecture given, validation data needed to choose best architecture
     images, labels = read_data_surveillance(autoTrainNN)
   else: # If architecture is given, use all data for training.
@@ -342,14 +316,17 @@ def train():
               for _ in range(10):
                 arc, acc = sess.run([
                   controller_ops["sample_arc"], # Run validation on sampled architecture
-                  controller_ops["valid_acc"], # Get validation acc
+                  controller_ops["valid_acc"], # Get value from validation acc node 
                 ])
-                if FLAGS.search_for == "micro":
+                if acc > best[1]:
+                  best = arc, acc
+                if FLAGS.search_for == "micro": # Searching for micro arch / cells
                   normal_arc, reduce_arc = arc
                   print(np.reshape(normal_arc, [-1]))
                   print(np.reshape(reduce_arc, [-1]))
                 else:
                   start = 0
+                  # Formatting the architecture for printing
                   for layer_id in range(FLAGS.child_num_layers):
                     if FLAGS.controller_search_whole_channels:
                       end = start + 1 + layer_id
@@ -367,9 +344,23 @@ def train():
 
           if epoch >= FLAGS.num_epochs:
             break
+  log_file = os.path.join(FLAGS.output_dir, "best")
+  if not os.path.exists(log_file):
+    os.mknod(log_file)
+  arc,acc = best
+  print("Best architecture:")
+  for layer_id in range(FLAGS.child_num_layers):
+    if FLAGS.controller_search_whole_channels:
+      end = start + 1 + layer_id
+    else:
+      end = start + 2 * FLAGS.child_num_branches + layer_id
+    print(np.reshape(arc[start: end], [-1]))
+    start = end
+  print("Validation Accuracy: {:<6.4f}".format(acc))
 
 
 def main(_):
+  # Prepare directory
   print("-" * 80)
   if not os.path.isdir(FLAGS.output_dir):
     print("Path {} does not exist. Creating.".format(FLAGS.output_dir))
@@ -379,13 +370,82 @@ def main(_):
     shutil.rmtree(FLAGS.output_dir)
     os.makedirs(FLAGS.output_dir)
 
+  # Redirect stdout1 --------------------------------------------------------------------------------------------
   print("-" * 80)
-  log_file = os.path.join(FLAGS.output_dir, "stdout")
+  log_file = os.path.join(FLAGS.output_dir, "stdout1")
+  if not os.path.exists(log_file):
+    os.mknod(log_file)
+
   print("Logging to {}".format(log_file))
   sys.stdout = Logger(log_file)
 
   utils.print_user_flags()
-  train()
+
+  # Load pickles file
+  print('Loading pickled file...')
+  with open('/home/yuwei/projects/vincent/pickleRick/allCrops1.pkl') as p_crop:
+      allCrops1 = cPickle.load(p_crop)
+  with open('/home/yuwei/projects/vincent/pickleRick/allCrops2.pkl') as p_crop:
+      allCrops2 = cPickle.load(p_crop)
+
+  with open('/home/yuwei/projects/vincent/pickleRick/labels.pkl','r') as p_crop:
+    labels1 = cPickle.load(p_crop)
+    labels2 = cPickle.load(p_crop)
+    labels3 = cPickle.load(p_crop)    
+    labels1_Brio1 = cPickle.load(p_crop)
+    labels1_Brio2 = cPickle.load(p_crop)
+    labels2_Brio1 = cPickle.load(p_crop)
+  
+  # Prepare and divide data
+  autoTrainNN = AutoTrain()
+  combined_1 = zip(allCrops1 + allCrops2, np.concatenate((labels1,labels2)))
+  autoTrainNN.addLabelledData(combined_1)
+  train(autoTrainNN)
+
+
+  # Redirect stdout2 -------------------------------------------------------------------------------------------
+  print("-" * 80)
+  log_file = os.path.join(FLAGS.output_dir, "stdout2")
+  if not os.path.exists(log_file):
+    os.mknod(log_file)
+
+  print("Logging to {}".format(log_file))
+  sys.stdout = Logger(log_file)
+
+  utils.print_user_flags()
+
+  # Load pickles file
+  with open('/home/yuwei/projects/vincent/pickleRick/allCrops3.pkl') as p_crop:
+      allCrops3 = cPickle.load(p_crop)    
+  with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops1.pkl') as p_crop:
+      allCrops1_Brio1 = cPickle.load(p_crop)
+
+  combined_2 = zip(allCrops3 + allCrops1_Brio1, np.concatenate((labels3,labels1_Brio1)))
+  autoTrainNN.addLabelledData(combined_2)
+  train(autoTrainNN)
+
+  # Redirect stdout3 --------------------------------------------------------------------------------------------
+  print("-" * 80)
+  log_file = os.path.join(FLAGS.output_dir, "stdout3")
+  if not os.path.exists(log_file):
+    os.mknod(log_file)
+
+  print("Logging to {}".format(log_file))
+  sys.stdout = Logger(log_file)
+
+  utils.print_user_flags()
+
+  # Load pickles file
+  with open('/home/yuwei/projects/vincent/pickleRick/brio2/allCrops1.pkl') as p_crop:
+      allCrops1_Brio2 = cPickle.load(p_crop)
+  with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops2.pkl') as p_crop:
+      allCrops2_Brio1 = cPickle.load(p_crop)
+
+  combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
+  autoTrainNN.addLabelledData(combined_3)
+  train(autoTrainNN)
+
+  
 
 
 if __name__ == "__main__":

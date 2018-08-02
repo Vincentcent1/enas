@@ -3,7 +3,7 @@ import sys
 import cPickle as pickle
 import numpy as np
 import tensorflow as tf
-
+import cv2
 
 def _read_data(data_path, train_files):
   """Reads CIFAR-10 format data. Always returns NHWC format.
@@ -86,21 +86,28 @@ def read_data_surveillance(autoTrain, num_valids=5000):
   '''
   print "-" * 80
   print "Reading data"
+  images, labels = {}, {}
 
   if num_valids: # Separate data into training and validation
     images["train"],labels["train"] = zip(*autoTrain.train)
+    images["train"] = np.float32([cv2.resize(img, (227,227))  for img in images["train"]])
     images["valid"],labels["valid"] = zip(*autoTrain.val)
+    images["valid"] = np.float32([cv2.resize(img, (227,227))  for img in images["valid"]])
 
   else: # Skip validation data
     images["train"],labels["train"] = zip(*autoTrain.train)
     images["valid"],labels["valid"] = zip(*autoTrain.val)
     images["train"],labels["train"] = images["train"] + images["valid"], labels["train"] + labels["valid"]
+    images["train"] = np.float32([cv2.resize(img, (227,227))  for img in images["train"]])
+    images["valid"],labels["valid"] = None,None
 
   images["test"],labels["test"] = zip(*autoTrain.test)
+  images["test"] = np.float32([cv2.resize(img, (227,227))  for img in images["test"]])
 
-  print "Preprocess: [subtract mean], [divide std]"
-  mean = np.mean(images["train"], axis=(0, 1, 2), keepdims=True)
-  std = np.std(images["train"], axis=(0, 1, 2), keepdims=True)
+  print "Preprocess: [resize images], [subtract mean], [divide std]"
+
+  mean = np.mean(images["train"], axis=(0, 1, 2), dtype=np.float32, keepdims=True)
+  std = np.std(images["train"], axis=(0, 1, 2), dtype=np.float32, keepdims=True)
 
   print "mean: {}".format(np.reshape(mean * 255.0, [-1]))
   print "std: {}".format(np.reshape(std * 255.0, [-1]))

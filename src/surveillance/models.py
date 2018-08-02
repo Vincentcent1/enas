@@ -4,12 +4,12 @@ import sys
 import numpy as np
 import tensorflow as tf
 
-from src.cifar10.image_ops import conv
-from src.cifar10.image_ops import fully_connected
-from src.cifar10.image_ops import batch_norm
-from src.cifar10.image_ops import relu
-from src.cifar10.image_ops import max_pool
-from src.cifar10.image_ops import global_avg_pool
+from src.surveillance.image_ops import conv
+from src.surveillance.image_ops import fully_connected
+from src.surveillance.image_ops import batch_norm
+from src.surveillance.image_ops import relu
+from src.surveillance.image_ops import max_pool
+from src.surveillance.image_ops import global_avg_pool
 
 from src.utils import count_model_params
 from src.utils import get_train_ops
@@ -43,7 +43,7 @@ class Model(object):
       lr_dec_every: number of epochs to decay
     """
     print "-" * 80
-    print "Build model {}".format(name)
+    print "Building model {}...".format(name)
 
     self.cutout_size = cutout_size
     self.batch_size = batch_size
@@ -66,9 +66,9 @@ class Model(object):
     self.global_step = None
     self.valid_acc = None
     self.test_acc = None
-    print "Build data ops"
+    sys.stdout.write("Building data ops...")
     with tf.device("/cpu:0"):
-      # training data
+      # Generate training data
       self.num_train_examples = np.shape(images["train"])[0]
       self.num_train_batches = (
         self.num_train_examples + self.batch_size - 1) // self.batch_size
@@ -105,7 +105,7 @@ class Model(object):
       self.x_train = tf.map_fn(_pre_process, x_train, back_prop=False)
       self.y_train = y_train
 
-      # valid data
+      # Generate valid data
       self.x_valid, self.y_valid = None, None
       if images["valid"] is not None:
         images["valid_original"] = np.copy(images["valid"])
@@ -125,7 +125,7 @@ class Model(object):
           allow_smaller_final_batch=True,
         )
 
-      # test data
+      # Generate test data
       if self.data_format == "NCHW":
         images["test"] = tf.transpose(images["test"], [0, 3, 1, 2])
       self.num_test_examples = np.shape(images["test"])[0]
@@ -144,6 +144,7 @@ class Model(object):
     # cache images and labels
     self.images = images
     self.labels = labels
+    print("Done")
 
   def eval_once(self, sess, eval_set, feed_dict=None, verbose=False):
     """Expects self.acc and self.global_step to be defined.

@@ -1,0 +1,1101 @@
+--------------------------------------------------------------------------------
+batch_size....................................................................64
+child_block_size...............................................................3
+child_cutout_size...........................................................None
+child_drop_path_keep_prob....................................................1.0
+child_filter_size..............................................................5
+child_fixed_arc2 5 1 0 0 0 4 0 0 0 2 0 1 0 1 2 1 1 0 0 1 4 0 0 0 0 0 0 4 0 0 1 1 1 0 0 0 1 1 1 1 1 0 1 1 0 1 1 0 1 0 0 1 1 0 1 0 1 1 1 0 0 0 0 1 0 0 0 0 1 1 1 1 1 0 1 1 1
+child_grad_bound.............................................................5.0
+child_keep_prob..............................................................0.5
+child_l2_reg..............................................................0.0002
+child_lr.....................................................................0.1
+child_lr_T_0..................................................................10
+child_lr_T_mul.................................................................2
+child_lr_cosine.............................................................True
+child_lr_dec_every...........................................................100
+child_lr_dec_rate............................................................0.1
+child_lr_max................................................................0.05
+child_lr_min...............................................................0.001
+child_num_aggregate.........................................................None
+child_num_branches.............................................................4
+child_num_cells................................................................5
+child_num_layers..............................................................12
+child_num_replicas.............................................................1
+child_out_filters.............................................................36
+child_out_filters_scale........................................................1
+child_skip_pattern..........................................................None
+child_sync_replicas........................................................False
+child_use_aux_heads.........................................................True
+controller_bl_dec...........................................................0.99
+controller_entropy_weight.................................................0.0001
+controller_forwards_limit......................................................2
+controller_keep_prob.........................................................0.5
+controller_l2_reg............................................................0.0
+controller_lr..............................................................0.001
+controller_lr_dec_rate.......................................................1.0
+controller_num_aggregate......................................................20
+controller_num_replicas........................................................1
+controller_op_tanh_reduce....................................................2.5
+controller_search_whole_channels............................................True
+controller_skip_target.......................................................0.4
+controller_skip_weight.......................................................0.8
+controller_sync_replicas....................................................True
+controller_tanh_constant.....................................................1.5
+controller_temperature......................................................None
+controller_train_every.........................................................1
+controller_train_steps........................................................50
+controller_training........................................................False
+controller_use_critic......................................................False
+data_format.................................................................NCHW
+data_path...........................................................data/cifar10
+eval_every_epochs..............................................................1
+log_every.....................................................................50
+num_epochs...................................................................310
+output_dir..................................................surveillance_outputs
+reset_output_dir............................................................True
+search_for.................................................................macro
+Loading pickled file...
+Added 638,79,80 datapoints to train,val,test data respectively.
+--------------------------------------------------------------------------------
+Reading data
+Preprocess: [resize images], [subtract mean], [divide std]
+mean: [106.65102   95.388985  84.33716 ]
+std: [65.029434 62.873974 61.43816 ]
+--------------------------------------------------------------------------------
+Building model child...
+Building data ops...Done
+--------------------------------------------------------------------------------
+Build train graph
+Tensor("child/layer_0/conv_5x5/bn/Identity:0", shape=(?, 36, 32, 32), dtype=float32)
+Tensor("child/layer_1/skip/bn/Identity:0", shape=(?, 36, 32, 32), dtype=float32)
+Tensor("child/layer_2/skip/bn/Identity:0", shape=(?, 36, 32, 32), dtype=float32)
+Tensor("child/layer_3/pool_at_3/from_4/bn/Identity:0", shape=(?, 72, 16, 16), dtype=float32)
+Tensor("child/layer_4/skip/bn/Identity:0", shape=(?, 72, 16, 16), dtype=float32)
+Tensor("child/layer_5/skip/bn/Identity:0", shape=(?, 72, 16, 16), dtype=float32)
+Tensor("child/layer_6/skip/bn/Identity:0", shape=(?, 72, 16, 16), dtype=float32)
+Tensor("child/layer_7/pool_at_7/from_8/bn/Identity:0", shape=(?, 144, 8, 8), dtype=float32)
+Tensor("child/layer_8/skip/bn/Identity:0", shape=(?, 144, 8, 8), dtype=float32)
+Tensor("child/layer_9/skip/bn/Identity:0", shape=(?, 144, 8, 8), dtype=float32)
+Tensor("child/layer_10/skip/bn/Identity:0", shape=(?, 144, 8, 8), dtype=float32)
+Tensor("child/layer_11/skip/bn/Identity:0", shape=(?, 144, 8, 8), dtype=float32)
+Model has 1910844 params
+--------------------------------------------------------------------------------
+Build test graph
+Tensor("child_1/layer_0/conv_5x5/bn/FusedBatchNorm:0", shape=(?, 36, 227, 227), dtype=float32)
+Tensor("child_1/layer_1/skip/bn/FusedBatchNorm:0", shape=(?, 36, 227, 227), dtype=float32)
+Tensor("child_1/layer_2/skip/bn/FusedBatchNorm:0", shape=(?, 36, 227, 227), dtype=float32)
+Tensor("child_1/layer_3/pool_at_3/from_4/bn/FusedBatchNorm:0", shape=(?, 72, 114, 114), dtype=float32)
+Tensor("child_1/layer_4/skip/bn/FusedBatchNorm:0", shape=(?, 72, 114, 114), dtype=float32)
+Tensor("child_1/layer_5/skip/bn/FusedBatchNorm:0", shape=(?, 72, 114, 114), dtype=float32)
+Tensor("child_1/layer_6/skip/bn/FusedBatchNorm:0", shape=(?, 72, 114, 114), dtype=float32)
+Tensor("child_1/layer_7/pool_at_7/from_8/bn/FusedBatchNorm:0", shape=(?, 144, 57, 57), dtype=float32)
+Tensor("child_1/layer_8/skip/bn/FusedBatchNorm:0", shape=(?, 144, 57, 57), dtype=float32)
+Tensor("child_1/layer_9/skip/bn/FusedBatchNorm:0", shape=(?, 144, 57, 57), dtype=float32)
+Tensor("child_1/layer_10/skip/bn/FusedBatchNorm:0", shape=(?, 144, 57, 57), dtype=float32)
+Tensor("child_1/layer_11/skip/bn/FusedBatchNorm:0", shape=(?, 144, 57, 57), dtype=float32)
+--------------------------------------------------------------------------------
+Starting session
+Epoch 1: Eval
+Eval at 12
+test_accuracy: 0.6800
+Epoch 2: Eval
+Eval at 24
+test_accuracy: 0.3400
+Epoch 3: Eval
+Eval at 36
+test_accuracy: 0.7100
+Epoch 4: Eval
+Eval at 48
+test_accuracy: 0.7400
+epoch=4     ch_step=50     loss=0.818785 lr=0.0331   |g|=0.9509   tr_acc=47 / 64 mins=1.45      
+Epoch 5: Eval
+Eval at 60
+test_accuracy: 0.6900
+Epoch 6: Eval
+Eval at 72
+test_accuracy: 0.7800
+Epoch 7: Eval
+Eval at 84
+test_accuracy: 0.5800
+Epoch 8: Eval
+Eval at 96
+test_accuracy: 0.7400
+epoch=8     ch_step=100    loss=0.874889 lr=0.0057   |g|=2.0050   tr_acc=45 / 64 mins=1.85      
+Epoch 9: Eval
+Eval at 108
+test_accuracy: 0.6800
+Epoch 10: Eval
+Eval at 120
+test_accuracy: 0.7500
+Epoch 11: Eval
+Eval at 132
+test_accuracy: 0.8100
+Epoch 12: Eval
+Eval at 144
+test_accuracy: 0.7500
+epoch=12    ch_step=150    loss=0.748770 lr=0.0488   |g|=1.2358   tr_acc=47 / 64 mins=2.25      
+Epoch 13: Eval
+Eval at 156
+test_accuracy: 0.6800
+Epoch 14: Eval
+Eval at 168
+test_accuracy: 0.7300
+Epoch 15: Eval
+Eval at 180
+test_accuracy: 0.7800
+Epoch 16: Eval
+Eval at 192
+test_accuracy: 0.7400
+epoch=16    ch_step=200    loss=0.789387 lr=0.0399   |g|=0.7841   tr_acc=48 / 64 mins=2.65      
+Epoch 17: Eval
+Eval at 204
+test_accuracy: 0.8000
+Epoch 18: Eval
+Eval at 216
+test_accuracy: 0.7200
+Epoch 19: Eval
+Eval at 228
+test_accuracy: 0.7100
+Epoch 20: Eval
+Eval at 240
+test_accuracy: 0.7400
+epoch=20    ch_step=250    loss=0.683298 lr=0.0255   |g|=1.2392   tr_acc=49 / 64 mins=3.05      
+Epoch 21: Eval
+Eval at 252
+test_accuracy: 0.7600
+Epoch 22: Eval
+Eval at 264
+test_accuracy: 0.7900
+Epoch 23: Eval
+Eval at 276
+test_accuracy: 0.7600
+Epoch 24: Eval
+Eval at 288
+test_accuracy: 0.8200
+epoch=25    ch_step=300    loss=0.664825 lr=0.0111   |g|=0.8432   tr_acc=46 / 64 mins=3.44      
+Epoch 25: Eval
+Eval at 300
+test_accuracy: 0.7400
+Epoch 26: Eval
+Eval at 312
+test_accuracy: 0.7700
+Epoch 27: Eval
+Eval at 324
+test_accuracy: 0.8000
+Epoch 28: Eval
+Eval at 336
+test_accuracy: 0.8200
+Epoch 29: Eval
+Eval at 348
+test_accuracy: 0.7600
+epoch=29    ch_step=350    loss=0.599584 lr=0.0013   |g|=0.9617   tr_acc=50 / 64 mins=3.90      
+Epoch 30: Eval
+Eval at 360
+test_accuracy: 0.7900
+Epoch 31: Eval
+Eval at 372
+test_accuracy: 0.7600
+Epoch 32: Eval
+Eval at 384
+test_accuracy: 0.7400
+Epoch 33: Eval
+Eval at 396
+test_accuracy: 0.7300
+epoch=33    ch_step=400    loss=0.606023 lr=0.0493   |g|=0.9089   tr_acc=51 / 64 mins=4.30      
+Epoch 34: Eval
+Eval at 408
+test_accuracy: 0.7300
+Epoch 35: Eval
+Eval at 420
+test_accuracy: 0.7100
+Epoch 36: Eval
+Eval at 432
+test_accuracy: 0.8200
+Epoch 37: Eval
+Eval at 444
+test_accuracy: 0.5400
+epoch=37    ch_step=450    loss=0.716264 lr=0.0464   |g|=0.8387   tr_acc=47 / 64 mins=4.69      
+Epoch 38: Eval
+Eval at 456
+test_accuracy: 0.7200
+Epoch 39: Eval
+Eval at 468
+test_accuracy: 0.7200
+Epoch 40: Eval
+Eval at 480
+test_accuracy: 0.7400
+Epoch 41: Eval
+Eval at 492
+test_accuracy: 0.7200
+epoch=41    ch_step=500    loss=0.599194 lr=0.0414   |g|=0.5906   tr_acc=53 / 64 mins=5.09      
+Epoch 42: Eval
+Eval at 504
+test_accuracy: 0.7200
+Epoch 43: Eval
+Eval at 516
+test_accuracy: 0.7200
+Epoch 44: Eval
+Eval at 528
+test_accuracy: 0.7400
+Epoch 45: Eval
+Eval at 540
+test_accuracy: 0.7600
+epoch=45    ch_step=550    loss=0.578336 lr=0.0349   |g|=0.7194   tr_acc=50 / 64 mins=5.48      
+Epoch 46: Eval
+Eval at 552
+test_accuracy: 0.7600
+Epoch 47: Eval
+Eval at 564
+test_accuracy: 0.8300
+Epoch 48: Eval
+Eval at 576
+test_accuracy: 0.7900
+Epoch 49: Eval
+Eval at 588
+test_accuracy: 0.8000
+epoch=50    ch_step=600    loss=0.703078 lr=0.0274   |g|=1.1498   tr_acc=48 / 64 mins=5.87      
+Epoch 50: Eval
+Eval at 600
+test_accuracy: 0.7300
+Epoch 51: Eval
+Eval at 612
+test_accuracy: 0.8100
+Epoch 52: Eval
+Eval at 624
+test_accuracy: 0.7400
+Epoch 53: Eval
+Eval at 636
+test_accuracy: 0.7800
+Epoch 54: Eval
+Eval at 648
+test_accuracy: 0.7200
+epoch=54    ch_step=650    loss=0.623127 lr=0.0179   |g|=1.0545   tr_acc=49 / 64 mins=6.32      
+Epoch 55: Eval
+Eval at 660
+test_accuracy: 0.7900
+Epoch 56: Eval
+Eval at 672
+test_accuracy: 0.7800
+Epoch 57: Eval
+Eval at 684
+test_accuracy: 0.7800
+Epoch 58: Eval
+Eval at 696
+test_accuracy: 0.7600
+epoch=58    ch_step=700    loss=0.738914 lr=0.0111   |g|=0.8873   tr_acc=43 / 64 mins=6.73      
+Epoch 59: Eval
+Eval at 708
+test_accuracy: 0.7800
+Epoch 60: Eval
+Eval at 720
+test_accuracy: 0.7900
+Epoch 61: Eval
+Eval at 732
+test_accuracy: 0.7700
+Epoch 62: Eval
+Eval at 744
+test_accuracy: 0.7600
+epoch=62    ch_step=750    loss=0.609868 lr=0.0057   |g|=0.9967   tr_acc=52 / 64 mins=7.14      
+Epoch 63: Eval
+Eval at 756
+test_accuracy: 0.7400
+Epoch 64: Eval
+Eval at 768
+test_accuracy: 0.7800
+Epoch 65: Eval
+Eval at 780
+test_accuracy: 0.7700
+Epoch 66: Eval
+Eval at 792
+test_accuracy: 0.7900
+epoch=66    ch_step=800    loss=0.785932 lr=0.0022   |g|=0.9736   tr_acc=45 / 64 mins=7.55      
+Epoch 67: Eval
+Eval at 804
+test_accuracy: 0.7900
+Epoch 68: Eval
+Eval at 816
+test_accuracy: 0.8000
+Epoch 69: Eval
+Eval at 828
+test_accuracy: 0.7700
+Epoch 70: Eval
+Eval at 840
+test_accuracy: 0.7800
+epoch=70    ch_step=850    loss=0.667963 lr=0.0500   |g|=0.8834   tr_acc=52 / 64 mins=7.97      
+Epoch 71: Eval
+Eval at 852
+test_accuracy: 0.8100
+Epoch 72: Eval
+Eval at 864
+test_accuracy: 0.7800
+Epoch 73: Eval
+Eval at 876
+test_accuracy: 0.6800
+Epoch 74: Eval
+Eval at 888
+test_accuracy: 0.7800
+epoch=75    ch_step=900    loss=0.769391 lr=0.0497   |g|=1.2958   tr_acc=50 / 64 mins=8.37      
+Epoch 75: Eval
+Eval at 900
+test_accuracy: 0.8200
+Epoch 76: Eval
+Eval at 912
+test_accuracy: 0.8300
+Epoch 77: Eval
+Eval at 924
+test_accuracy: 0.7800
+Epoch 78: Eval
+Eval at 936
+test_accuracy: 0.7400
+Epoch 79: Eval
+Eval at 948
+test_accuracy: 0.7600
+epoch=79    ch_step=950    loss=0.877451 lr=0.0485   |g|=1.3206   tr_acc=44 / 64 mins=8.84      
+Epoch 80: Eval
+Eval at 960
+test_accuracy: 0.7400
+Epoch 81: Eval
+Eval at 972
+test_accuracy: 0.7700
+Epoch 82: Eval
+Eval at 984
+test_accuracy: 0.7200
+Epoch 83: Eval
+Eval at 996
+test_accuracy: 0.8100
+epoch=83    ch_step=1000   loss=0.635531 lr=0.0469   |g|=1.0996   tr_acc=48 / 64 mins=9.25      
+Epoch 84: Eval
+Eval at 1008
+test_accuracy: 0.7400
+Epoch 85: Eval
+Eval at 1020
+test_accuracy: 0.7700
+Epoch 86: Eval
+Eval at 1032
+test_accuracy: 0.7200
+Epoch 87: Eval
+Eval at 1044
+test_accuracy: 0.8100
+epoch=87    ch_step=1050   loss=0.620600 lr=0.0447   |g|=0.8058   tr_acc=51 / 64 mins=9.65      
+Epoch 88: Eval
+Eval at 1056
+test_accuracy: 0.7900
+Epoch 89: Eval
+Eval at 1068
+test_accuracy: 0.6800
+Epoch 90: Eval
+Eval at 1080
+test_accuracy: 0.7800
+Epoch 91: Eval
+Eval at 1092
+test_accuracy: 0.7700
+epoch=91    ch_step=1100   loss=0.556625 lr=0.0421   |g|=0.8558   tr_acc=51 / 64 mins=10.06     
+Epoch 92: Eval
+Eval at 1104
+test_accuracy: 0.7400
+Epoch 93: Eval
+Eval at 1116
+test_accuracy: 0.7700
+Epoch 94: Eval
+Eval at 1128
+test_accuracy: 0.7200
+Epoch 95: Eval
+Eval at 1140
+test_accuracy: 0.7500
+epoch=95    ch_step=1150   loss=0.528219 lr=0.0391   |g|=0.8226   tr_acc=53 / 64 mins=10.46     
+Epoch 96: Eval
+Eval at 1152
+test_accuracy: 0.7500
+Epoch 97: Eval
+Eval at 1164
+test_accuracy: 0.7500
+Epoch 98: Eval
+Eval at 1176
+test_accuracy: 0.7400
+Epoch 99: Eval
+Eval at 1188
+test_accuracy: 0.8100
+epoch=100   ch_step=1200   loss=0.567824 lr=0.0358   |g|=0.8516   tr_acc=54 / 64 mins=10.87     
+Epoch 100: Eval
+Eval at 1200
+test_accuracy: 0.7800
+Epoch 101: Eval
+Eval at 1212
+test_accuracy: 0.7500
+Epoch 102: Eval
+Eval at 1224
+test_accuracy: 0.7800
+Epoch 103: Eval
+Eval at 1236
+test_accuracy: 0.8200
+Epoch 104: Eval
+Eval at 1248
+test_accuracy: 0.7700
+epoch=104   ch_step=1250   loss=0.508824 lr=0.0312   |g|=0.5924   tr_acc=56 / 64 mins=11.33     
+Epoch 105: Eval
+Eval at 1260
+test_accuracy: 0.7700
+Epoch 106: Eval
+Eval at 1272
+test_accuracy: 0.8400
+Epoch 107: Eval
+Eval at 1284
+test_accuracy: 0.8300
+Epoch 108: Eval
+Eval at 1296
+test_accuracy: 0.7900
+epoch=108   ch_step=1300   loss=0.352467 lr=0.0274   |g|=0.7819   tr_acc=60 / 64 mins=11.74     
+Epoch 109: Eval
+Eval at 1308
+test_accuracy: 0.7400
+Epoch 110: Eval
+Eval at 1320
+test_accuracy: 0.7400
+Epoch 111: Eval
+Eval at 1332
+test_accuracy: 0.7400
+Epoch 112: Eval
+Eval at 1344
+test_accuracy: 0.8000
+epoch=112   ch_step=1350   loss=0.576854 lr=0.0236   |g|=1.4552   tr_acc=51 / 64 mins=12.15     
+Epoch 113: Eval
+Eval at 1356
+test_accuracy: 0.7500
+Epoch 114: Eval
+Eval at 1368
+test_accuracy: 0.8000
+Epoch 115: Eval
+Eval at 1380
+test_accuracy: 0.7300
+Epoch 116: Eval
+Eval at 1392
+test_accuracy: 0.7500
+epoch=116   ch_step=1400   loss=0.512154 lr=0.0198   |g|=0.7801   tr_acc=52 / 64 mins=12.54     
+Epoch 117: Eval
+Eval at 1404
+test_accuracy: 0.7600
+Epoch 118: Eval
+Eval at 1416
+test_accuracy: 0.7800
+Epoch 119: Eval
+Eval at 1428
+test_accuracy: 0.7900
+Epoch 120: Eval
+Eval at 1440
+test_accuracy: 0.8100
+epoch=120   ch_step=1450   loss=0.356349 lr=0.0161   |g|=0.6314   tr_acc=58 / 64 mins=12.95     
+Epoch 121: Eval
+Eval at 1452
+test_accuracy: 0.7500
+Epoch 122: Eval
+Eval at 1464
+test_accuracy: 0.7800
+Epoch 123: Eval
+Eval at 1476
+test_accuracy: 0.8000
+Epoch 124: Eval
+Eval at 1488
+test_accuracy: 0.8200
+epoch=125   ch_step=1500   loss=0.468297 lr=0.0127   |g|=1.1351   tr_acc=50 / 64 mins=13.36     
+Epoch 125: Eval
+Eval at 1500
+test_accuracy: 0.7400
+Epoch 126: Eval
+Eval at 1512
+test_accuracy: 0.8000
+Epoch 127: Eval
+Eval at 1524
+test_accuracy: 0.7600
+Epoch 128: Eval
+Eval at 1536
+test_accuracy: 0.8200
+Epoch 129: Eval
+Eval at 1548
+test_accuracy: 0.7500
+epoch=129   ch_step=1550   loss=0.491247 lr=0.0089   |g|=1.1153   tr_acc=53 / 64 mins=13.82     
+Epoch 130: Eval
+Eval at 1560
+test_accuracy: 0.7800
+Epoch 131: Eval
+Eval at 1572
+test_accuracy: 0.8000
+Epoch 132: Eval
+Eval at 1584
+test_accuracy: 0.8200
+Epoch 133: Eval
+Eval at 1596
+test_accuracy: 0.7800
+epoch=133   ch_step=1600   loss=0.585631 lr=0.0063   |g|=0.9036   tr_acc=54 / 64 mins=14.22     
+Epoch 134: Eval
+Eval at 1608
+test_accuracy: 0.7800
+Epoch 135: Eval
+Eval at 1620
+test_accuracy: 0.8000
+Epoch 136: Eval
+Eval at 1632
+test_accuracy: 0.8200
+Epoch 137: Eval
+Eval at 1644
+test_accuracy: 0.7700
+epoch=137   ch_step=1650   loss=0.599867 lr=0.0041   |g|=1.1387   tr_acc=48 / 64 mins=14.62     
+Epoch 138: Eval
+Eval at 1656
+test_accuracy: 0.8000
+Epoch 139: Eval
+Eval at 1668
+test_accuracy: 0.8100
+Epoch 140: Eval
+Eval at 1680
+test_accuracy: 0.8100
+Epoch 141: Eval
+Eval at 1692
+test_accuracy: 0.7500
+epoch=141   ch_step=1700   loss=0.507464 lr=0.0025   |g|=0.9727   tr_acc=53 / 64 mins=15.02     
+Epoch 142: Eval
+Eval at 1704
+test_accuracy: 0.7800
+Epoch 143: Eval
+Eval at 1716
+test_accuracy: 0.7900
+Epoch 144: Eval
+Eval at 1728
+test_accuracy: 0.8100
+Epoch 145: Eval
+Eval at 1740
+test_accuracy: 0.7700
+epoch=145   ch_step=1750   loss=0.377291 lr=0.0015   |g|=1.2528   tr_acc=58 / 64 mins=15.42     
+Epoch 146: Eval
+Eval at 1752
+test_accuracy: 0.7800
+Epoch 147: Eval
+Eval at 1764
+test_accuracy: 0.7900
+Epoch 148: Eval
+Eval at 1776
+test_accuracy: 0.8200
+Epoch 149: Eval
+Eval at 1788
+test_accuracy: 0.7800
+epoch=150   ch_step=1800   loss=0.417767 lr=0.0010   |g|=1.3952   tr_acc=54 / 64 mins=15.82     
+Epoch 150: Eval
+Eval at 1800
+test_accuracy: 0.8100
+Epoch 151: Eval
+Eval at 1812
+test_accuracy: 0.8000
+Epoch 152: Eval
+Eval at 1824
+test_accuracy: 0.8400
+Epoch 153: Eval
+Eval at 1836
+test_accuracy: 0.7700
+Epoch 154: Eval
+Eval at 1848
+test_accuracy: 0.7200
+epoch=154   ch_step=1850   loss=0.725504 lr=0.0499   |g|=0.8880   tr_acc=49 / 64 mins=16.28     
+Epoch 155: Eval
+Eval at 1860
+test_accuracy: 0.5600
+Epoch 156: Eval
+Eval at 1872
+test_accuracy: 0.7900
+Epoch 157: Eval
+Eval at 1884
+test_accuracy: 0.7100
+Epoch 158: Eval
+Eval at 1896
+test_accuracy: 0.7700
+epoch=158   ch_step=1900   loss=0.412921 lr=0.0497   |g|=0.8833   tr_acc=58 / 64 mins=16.68     
+Epoch 159: Eval
+Eval at 1908
+test_accuracy: 0.7800
+Epoch 160: Eval
+Eval at 1920
+test_accuracy: 0.7700
+Epoch 161: Eval
+Eval at 1932
+test_accuracy: 0.7500
+Epoch 162: Eval
+Eval at 1944
+test_accuracy: 0.8100
+epoch=162   ch_step=1950   loss=0.568818 lr=0.0493   |g|=0.8743   tr_acc=53 / 64 mins=17.08     
+Epoch 163: Eval
+Eval at 1956
+test_accuracy: 0.7600
+Epoch 164: Eval
+Eval at 1968
+test_accuracy: 0.8100
+Epoch 165: Eval
+Eval at 1980
+test_accuracy: 0.7500
+Epoch 166: Eval
+Eval at 1992
+test_accuracy: 0.7500
+epoch=166   ch_step=2000   loss=0.587834 lr=0.0488   |g|=0.9572   tr_acc=47 / 64 mins=17.48     
+Epoch 167: Eval
+Eval at 2004
+test_accuracy: 0.7200
+Epoch 168: Eval
+Eval at 2016
+test_accuracy: 0.7900
+Epoch 169: Eval
+Eval at 2028
+test_accuracy: 0.7700
+Epoch 170: Eval
+Eval at 2040
+test_accuracy: 0.7600
+epoch=170   ch_step=2050   loss=0.442129 lr=0.0481   |g|=0.7763   tr_acc=56 / 64 mins=17.87     
+Epoch 171: Eval
+Eval at 2052
+test_accuracy: 0.7500
+Epoch 172: Eval
+Eval at 2064
+test_accuracy: 0.8100
+Epoch 173: Eval
+Eval at 2076
+test_accuracy: 0.8200
+Epoch 174: Eval
+Eval at 2088
+test_accuracy: 0.7500
+epoch=175   ch_step=2100   loss=0.675525 lr=0.0473   |g|=0.8406   tr_acc=51 / 64 mins=18.25     
+Epoch 175: Eval
+Eval at 2100
+test_accuracy: 0.8000
+Epoch 176: Eval
+Eval at 2112
+test_accuracy: 0.7600
+Epoch 177: Eval
+Eval at 2124
+test_accuracy: 0.7300
+Epoch 178: Eval
+Eval at 2136
+test_accuracy: 0.7500
+Epoch 179: Eval
+Eval at 2148
+test_accuracy: 0.7500
+epoch=179   ch_step=2150   loss=0.459494 lr=0.0461   |g|=0.7678   tr_acc=53 / 64 mins=18.70     
+Epoch 180: Eval
+Eval at 2160
+test_accuracy: 0.7800
+Epoch 181: Eval
+Eval at 2172
+test_accuracy: 0.7000
+Epoch 182: Eval
+Eval at 2184
+test_accuracy: 0.7800
+Epoch 183: Eval
+Eval at 2196
+test_accuracy: 0.7300
+epoch=183   ch_step=2200   loss=0.595897 lr=0.0450   |g|=0.5728   tr_acc=53 / 64 mins=19.10     
+Epoch 184: Eval
+Eval at 2208
+test_accuracy: 0.7600
+Epoch 185: Eval
+Eval at 2220
+test_accuracy: 0.7500
+Epoch 186: Eval
+Eval at 2232
+test_accuracy: 0.7400
+Epoch 187: Eval
+Eval at 2244
+test_accuracy: 0.7700
+epoch=187   ch_step=2250   loss=0.378968 lr=0.0438   |g|=0.5922   tr_acc=59 / 64 mins=19.51     
+Epoch 188: Eval
+Eval at 2256
+test_accuracy: 0.7800
+Epoch 189: Eval
+Eval at 2268
+test_accuracy: 0.7100
+Epoch 190: Eval
+Eval at 2280
+test_accuracy: 0.7900
+Epoch 191: Eval
+Eval at 2292
+test_accuracy: 0.7600
+epoch=191   ch_step=2300   loss=0.571718 lr=0.0425   |g|=0.9862   tr_acc=51 / 64 mins=19.91     
+Epoch 192: Eval
+Eval at 2304
+test_accuracy: 0.7800
+Epoch 193: Eval
+Eval at 2316
+test_accuracy: 0.7700
+Epoch 194: Eval
+Eval at 2328
+test_accuracy: 0.7700
+Epoch 195: Eval
+Eval at 2340
+test_accuracy: 0.7800
+epoch=195   ch_step=2350   loss=0.753945 lr=0.0410   |g|=1.4401   tr_acc=49 / 64 mins=20.31     
+Epoch 196: Eval
+Eval at 2352
+test_accuracy: 0.8100
+Epoch 197: Eval
+Eval at 2364
+test_accuracy: 0.7700
+Epoch 198: Eval
+Eval at 2376
+test_accuracy: 0.7500
+Epoch 199: Eval
+Eval at 2388
+test_accuracy: 0.7800
+epoch=200   ch_step=2400   loss=0.677625 lr=0.0395   |g|=1.4961   tr_acc=44 / 64 mins=20.70     
+Epoch 200: Eval
+Eval at 2400
+test_accuracy: 0.7800
+Epoch 201: Eval
+Eval at 2412
+test_accuracy: 0.7200
+Epoch 202: Eval
+Eval at 2424
+test_accuracy: 0.7500
+Epoch 203: Eval
+Eval at 2436
+test_accuracy: 0.7400
+Epoch 204: Eval
+Eval at 2448
+test_accuracy: 0.8100
+epoch=204   ch_step=2450   loss=0.563762 lr=0.0375   |g|=1.2758   tr_acc=52 / 64 mins=21.15     
+Epoch 205: Eval
+Eval at 2460
+test_accuracy: 0.7500
+Epoch 206: Eval
+Eval at 2472
+test_accuracy: 0.7800
+Epoch 207: Eval
+Eval at 2484
+test_accuracy: 0.8000
+Epoch 208: Eval
+Eval at 2496
+test_accuracy: 0.8000
+epoch=208   ch_step=2500   loss=0.456241 lr=0.0358   |g|=0.9062   tr_acc=54 / 64 mins=21.53     
+Epoch 209: Eval
+Eval at 2508
+test_accuracy: 0.7500
+Epoch 210: Eval
+Eval at 2520
+test_accuracy: 0.8000
+Epoch 211: Eval
+Eval at 2532
+test_accuracy: 0.7800
+Epoch 212: Eval
+Eval at 2544
+test_accuracy: 0.7600
+epoch=212   ch_step=2550   loss=0.441830 lr=0.0340   |g|=0.9406   tr_acc=57 / 64 mins=21.94     
+Epoch 213: Eval
+Eval at 2556
+test_accuracy: 0.7400
+Epoch 214: Eval
+Eval at 2568
+test_accuracy: 0.7800
+Epoch 215: Eval
+Eval at 2580
+test_accuracy: 0.8000
+Epoch 216: Eval
+Eval at 2592
+test_accuracy: 0.8200
+epoch=216   ch_step=2600   loss=0.620503 lr=0.0322   |g|=0.9472   tr_acc=48 / 64 mins=22.34     
+Epoch 217: Eval
+Eval at 2604
+test_accuracy: 0.7500
+Epoch 218: Eval
+Eval at 2616
+test_accuracy: 0.7900
+Epoch 219: Eval
+Eval at 2628
+test_accuracy: 0.8200
+Epoch 220: Eval
+Eval at 2640
+test_accuracy: 0.7800
+epoch=220   ch_step=2650   loss=0.581530 lr=0.0303   |g|=0.9099   tr_acc=47 / 64 mins=22.74     
+Epoch 221: Eval
+Eval at 2652
+test_accuracy: 0.7400
+Epoch 222: Eval
+Eval at 2664
+test_accuracy: 0.7500
+Epoch 223: Eval
+Eval at 2676
+test_accuracy: 0.7700
+Epoch 224: Eval
+Eval at 2688
+test_accuracy: 0.8100
+epoch=225   ch_step=2700   loss=0.524350 lr=0.0284   |g|=0.9861   tr_acc=52 / 64 mins=23.14     
+Epoch 225: Eval
+Eval at 2700
+test_accuracy: 0.7700
+Epoch 226: Eval
+Eval at 2712
+test_accuracy: 0.7800
+Epoch 227: Eval
+Eval at 2724
+test_accuracy: 0.8300
+Epoch 228: Eval
+Eval at 2736
+test_accuracy: 0.7900
+Epoch 229: Eval
+Eval at 2748
+test_accuracy: 0.7700
+epoch=229   ch_step=2750   loss=0.496925 lr=0.0260   |g|=1.6715   tr_acc=57 / 64 mins=23.60     
+Epoch 230: Eval
+Eval at 2760
+test_accuracy: 0.7700
+Epoch 231: Eval
+Eval at 2772
+test_accuracy: 0.8000
+Epoch 232: Eval
+Eval at 2784
+test_accuracy: 0.8100
+Epoch 233: Eval
+Eval at 2796
+test_accuracy: 0.7800
+epoch=233   ch_step=2800   loss=0.553494 lr=0.0241   |g|=0.8605   tr_acc=51 / 64 mins=23.98     
+Epoch 234: Eval
+Eval at 2808
+test_accuracy: 0.7600
+Epoch 235: Eval
+Eval at 2820
+test_accuracy: 0.7900
+Epoch 236: Eval
+Eval at 2832
+test_accuracy: 0.7700
+Epoch 237: Eval
+Eval at 2844
+test_accuracy: 0.7300
+epoch=237   ch_step=2850   loss=0.470448 lr=0.0221   |g|=1.0528   tr_acc=53 / 64 mins=24.37     
+Epoch 238: Eval
+Eval at 2856
+test_accuracy: 0.7800
+Epoch 239: Eval
+Eval at 2868
+test_accuracy: 0.7900
+Epoch 240: Eval
+Eval at 2880
+test_accuracy: 0.8200
+Epoch 241: Eval
+Eval at 2892
+test_accuracy: 0.7700
+epoch=241   ch_step=2900   loss=0.608043 lr=0.0202   |g|=1.2606   tr_acc=54 / 64 mins=24.77     
+Epoch 242: Eval
+Eval at 2904
+test_accuracy: 0.7800
+Epoch 243: Eval
+Eval at 2916
+test_accuracy: 0.8000
+Epoch 244: Eval
+Eval at 2928
+test_accuracy: 0.8100
+Epoch 245: Eval
+Eval at 2940
+test_accuracy: 0.7400
+epoch=245   ch_step=2950   loss=0.534084 lr=0.0184   |g|=1.3641   tr_acc=53 / 64 mins=25.18     
+Epoch 246: Eval
+Eval at 2952
+test_accuracy: 0.7900
+Epoch 247: Eval
+Eval at 2964
+test_accuracy: 0.7900
+Epoch 248: Eval
+Eval at 2976
+test_accuracy: 0.7900
+Epoch 249: Eval
+Eval at 2988
+test_accuracy: 0.7800
+epoch=250   ch_step=3000   loss=0.431860 lr=0.0166   |g|=0.8680   tr_acc=56 / 64 mins=25.58     
+Epoch 250: Eval
+Eval at 3000
+test_accuracy: 0.8100
+Epoch 251: Eval
+Eval at 3012
+test_accuracy: 0.7900
+Epoch 252: Eval
+Eval at 3024
+test_accuracy: 0.8200
+Epoch 253: Eval
+Eval at 3036
+test_accuracy: 0.7700
+Epoch 254: Eval
+Eval at 3048
+test_accuracy: 0.7700
+epoch=254   ch_step=3050   loss=0.360987 lr=0.0144   |g|=0.8937   tr_acc=55 / 64 mins=26.05     
+Epoch 255: Eval
+Eval at 3060
+test_accuracy: 0.7800
+Epoch 256: Eval
+Eval at 3072
+test_accuracy: 0.8200
+Epoch 257: Eval
+Eval at 3084
+test_accuracy: 0.7700
+Epoch 258: Eval
+Eval at 3096
+test_accuracy: 0.7900
+epoch=258   ch_step=3100   loss=0.445181 lr=0.0127   |g|=0.8132   tr_acc=57 / 64 mins=26.44     
+Epoch 259: Eval
+Eval at 3108
+test_accuracy: 0.7900
+Epoch 260: Eval
+Eval at 3120
+test_accuracy: 0.8200
+Epoch 261: Eval
+Eval at 3132
+test_accuracy: 0.7700
+Epoch 262: Eval
+Eval at 3144
+test_accuracy: 0.7800
+epoch=262   ch_step=3150   loss=0.452212 lr=0.0111   |g|=1.4249   tr_acc=53 / 64 mins=26.83     
+Epoch 263: Eval
+Eval at 3156
+test_accuracy: 0.7900
+Epoch 264: Eval
+Eval at 3168
+test_accuracy: 0.8100
+Epoch 265: Eval
+Eval at 3180
+test_accuracy: 0.7800
+Epoch 266: Eval
+Eval at 3192
+test_accuracy: 0.7800
+epoch=266   ch_step=3200   loss=0.567309 lr=0.0096   |g|=1.0419   tr_acc=52 / 64 mins=27.23     
+Epoch 267: Eval
+Eval at 3204
+test_accuracy: 0.7900
+Epoch 268: Eval
+Eval at 3216
+test_accuracy: 0.8100
+Epoch 269: Eval
+Eval at 3228
+test_accuracy: 0.7700
+Epoch 270: Eval
+Eval at 3240
+test_accuracy: 0.7800
+epoch=270   ch_step=3250   loss=0.519514 lr=0.0082   |g|=1.2560   tr_acc=51 / 64 mins=27.64     
+Epoch 271: Eval
+Eval at 3252
+test_accuracy: 0.7900
+Epoch 272: Eval
+Eval at 3264
+test_accuracy: 0.8100
+Epoch 273: Eval
+Eval at 3276
+test_accuracy: 0.7700
+Epoch 274: Eval
+Eval at 3288
+test_accuracy: 0.7800
+epoch=275   ch_step=3300   loss=0.337463 lr=0.0069   |g|=0.8411   tr_acc=57 / 64 mins=28.03     
+Epoch 275: Eval
+Eval at 3300
+test_accuracy: 0.7900
+Epoch 276: Eval
+Eval at 3312
+test_accuracy: 0.8100
+Epoch 277: Eval
+Eval at 3324
+test_accuracy: 0.7800
+Epoch 278: Eval
+Eval at 3336
+test_accuracy: 0.7800
+Epoch 279: Eval
+Eval at 3348
+test_accuracy: 0.7900
+epoch=279   ch_step=3350   loss=0.432791 lr=0.0054   |g|=1.3326   tr_acc=54 / 64 mins=28.47     
+Epoch 280: Eval
+Eval at 3360
+test_accuracy: 0.8100
+Epoch 281: Eval
+Eval at 3372
+test_accuracy: 0.7700
+Epoch 282: Eval
+Eval at 3384
+test_accuracy: 0.7800
+Epoch 283: Eval
+Eval at 3396
+test_accuracy: 0.7900
+epoch=283   ch_step=3400   loss=0.703745 lr=0.0044   |g|=1.5829   tr_acc=47 / 64 mins=28.85     
+Epoch 284: Eval
+Eval at 3408
+test_accuracy: 0.8100
+Epoch 285: Eval
+Eval at 3420
+test_accuracy: 0.7800
+Epoch 286: Eval
+Eval at 3432
+test_accuracy: 0.7800
+Epoch 287: Eval
+Eval at 3444
+test_accuracy: 0.7900
+epoch=287   ch_step=3450   loss=0.533811 lr=0.0035   |g|=1.1947   tr_acc=54 / 64 mins=29.25     
+Epoch 288: Eval
+Eval at 3456
+test_accuracy: 0.8100
+Epoch 289: Eval
+Eval at 3468
+test_accuracy: 0.7700
+Epoch 290: Eval
+Eval at 3480
+test_accuracy: 0.7900
+Epoch 291: Eval
+Eval at 3492
+test_accuracy: 0.7900
+epoch=291   ch_step=3500   loss=0.261253 lr=0.0027   |g|=1.1603   tr_acc=58 / 64 mins=29.64     
+Epoch 292: Eval
+Eval at 3504
+test_accuracy: 0.8100
+Epoch 293: Eval
+Eval at 3516
+test_accuracy: 0.7700
+Epoch 294: Eval
+Eval at 3528
+test_accuracy: 0.7800
+Epoch 295: Eval
+Eval at 3540
+test_accuracy: 0.7900
+epoch=295   ch_step=3550   loss=0.432632 lr=0.0021   |g|=1.0310   tr_acc=55 / 64 mins=30.04     
+Epoch 296: Eval
+Eval at 3552
+test_accuracy: 0.8100
+Epoch 297: Eval
+Eval at 3564
+test_accuracy: 0.7700
+Epoch 298: Eval
+Eval at 3576
+test_accuracy: 0.7900
+Epoch 299: Eval
+Eval at 3588
+test_accuracy: 0.8100
+epoch=300   ch_step=3600   loss=0.357804 lr=0.0016   |g|=1.0714   tr_acc=56 / 64 mins=30.44     
+Epoch 300: Eval
+Eval at 3600
+test_accuracy: 0.8200
+Epoch 301: Eval
+Eval at 3612
+test_accuracy: 0.7800
+Epoch 302: Eval
+Eval at 3624
+test_accuracy: 0.7900
+Epoch 303: Eval
+Eval at 3636
+test_accuracy: 0.8100
+Epoch 304: Eval
+Eval at 3648
+test_accuracy: 0.8200
+epoch=304   ch_step=3650   loss=0.546689 lr=0.0012   |g|=1.3026   tr_acc=55 / 64 mins=30.91     
+Epoch 305: Eval
+Eval at 3660
+test_accuracy: 0.7700
+Epoch 306: Eval
+Eval at 3672
+test_accuracy: 0.7800
+Epoch 307: Eval
+Eval at 3684
+test_accuracy: 0.7900
+Epoch 308: Eval
+Eval at 3696
+test_accuracy: 0.8200
+epoch=308   ch_step=3700   loss=0.505662 lr=0.0010   |g|=1.6328   tr_acc=51 / 64 mins=31.31     
+Epoch 309: Eval
+Eval at 3708
+test_accuracy: 0.7700
+Epoch 310: Eval
+Eval at 3720
+test_accuracy: 0.7800

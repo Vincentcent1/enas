@@ -8,15 +8,15 @@ import sys
 import numpy as np
 import tensorflow as tf
 
-from src.cifar10.models import Model
-from src.cifar10.image_ops import conv
-from src.cifar10.image_ops import fully_connected
-from src.cifar10.image_ops import batch_norm
-from src.cifar10.image_ops import batch_norm_with_mask
-from src.cifar10.image_ops import relu
-from src.cifar10.image_ops import max_pool
-from src.cifar10.image_ops import drop_path
-from src.cifar10.image_ops import global_avg_pool
+from src.surveillance.models import Model
+from src.surveillance.image_ops import conv
+from src.surveillance.image_ops import fully_connected
+from src.surveillance.image_ops import batch_norm
+from src.surveillance.image_ops import batch_norm_with_mask
+from src.surveillance.image_ops import relu
+from src.surveillance.image_ops import max_pool
+from src.surveillance.image_ops import drop_path
+from src.surveillance.image_ops import global_avg_pool
 
 from src.utils import count_model_params
 from src.utils import get_train_ops

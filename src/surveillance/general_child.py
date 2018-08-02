@@ -8,18 +8,19 @@ import sys
 import numpy as np
 import tensorflow as tf
 
-from src.cifar10.models import Model
-from src.cifar10.image_ops import conv
-from src.cifar10.image_ops import fully_connected
-from src.cifar10.image_ops import batch_norm
-from src.cifar10.image_ops import batch_norm_with_mask
-from src.cifar10.image_ops import relu
-from src.cifar10.image_ops import max_pool
-from src.cifar10.image_ops import global_avg_pool
+from src.surveillance.models import Model
+from src.surveillance.image_ops import conv
+from src.surveillance.image_ops import fully_connected
+from src.surveillance.image_ops import batch_norm
+from src.surveillance.image_ops import batch_norm_with_mask
+from src.surveillance.image_ops import relu
+from src.surveillance.image_ops import max_pool
+from src.surveillance.image_ops import global_avg_pool
 
 from src.utils import count_model_params
 from src.utils import get_train_ops
 from src.common_ops import create_weight
+
 
 
 class GeneralChild(Model):
@@ -223,7 +224,7 @@ class GeneralChild(Model):
                 pooled_layers.append(x)
               layers = pooled_layers
         if self.whole_channels:
-          start_idx += 1 + layer_id
+          start_idx += 1 + layer_id # deeper layer will have higher jump dude to more skip connections possibilities
         else:
           start_idx += 2 * self.num_branches + layer_id
         print(layers[-1])
@@ -383,11 +384,14 @@ class GeneralChild(Model):
     if self.whole_channels:
       if self.data_format == "NHWC":
         inp_c = inputs.get_shape()[3].value
+        actual_data_format = 'channels_last'
       elif self.data_format == "NCHW":
         inp_c = inputs.get_shape()[1].value
+        actual_data_format = 'channels_first'
 
       count = self.sample_arc[start_idx]
       if count in [0, 1, 2, 3]:
+        # Add convolution/reduction layer
         size = [3, 3, 5, 5]
         filter_size = size[count]
         with tf.variable_scope("conv_1x1"):
@@ -404,9 +408,13 @@ class GeneralChild(Model):
                              data_format=self.data_format)
           out = batch_norm(out, is_training, data_format=self.data_format)
       elif count == 4:
-        pass
+        with tf.variable_scope("pool"):
+          out = tf.layers.average_pooling2d(
+            inputs, [3, 3], [1, 1], "SAME", data_format=actual_data_format)
       elif count == 5:
-        pass
+        with tf.variable_scope("pool"):
+          out = tf.layers.max_pooling2d(
+            inputs, [3, 3], [1, 1], "SAME", data_format=actual_data_format)
       else:
         raise ValueError("Unknown operation number '{0}'".format(count))
     else:
@@ -691,6 +699,7 @@ class GeneralChild(Model):
     logits = self._model(x_valid_shuffle, False, reuse=True)
     valid_shuffle_preds = tf.argmax(logits, axis=1)
     valid_shuffle_preds = tf.to_int32(valid_shuffle_preds)
+    y_valid_shuffle = tf.to_int32(y_valid_shuffle)
     self.valid_shuffle_acc = tf.equal(valid_shuffle_preds, y_valid_shuffle)
     self.valid_shuffle_acc = tf.to_int32(self.valid_shuffle_acc)
     self.valid_shuffle_acc = tf.reduce_sum(self.valid_shuffle_acc)
