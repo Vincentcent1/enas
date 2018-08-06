@@ -227,9 +227,26 @@ def train(autoTrainNN):
 
   g = tf.Graph()
   with g.as_default():
-    images_placeholder =tf.placeholder(tf.float32, [None,227,227])
-    labels_placeholder = labels_placeholder(tf.int32,[None])
-    ops = get_ops(images, labels)
+
+    images_placeholder_train = tf.placeholder(tf.float32,[None, 227, 227])
+    images_placeholder_valid = tf.placeholder(tf.float32,[None, 227, 227])
+    images_placeholder_test = tf.placeholder(tf.float32,[None, 227, 227])
+    images_placeholder = { # dictionary of placeholders since get_ops receive dictionary
+      "train": images_placeholder_train,
+      "valid": images_placeholder_valid,
+      "test": images_placeholder_test
+    }
+
+    labels_placeholder_train = tf.placeholder(tf.int32,[None])
+    labels_placeholder_valid = tf.placeholder(tf.int32,[None])
+    labels_placeholder_test = tf.placeholder(tf.int32,[None])
+    labels_placeholder = { # dictionary of placeholders since get_ops receive dictionary
+      "train": labels_placeholder_train,
+      "valid": labels_placeholder_valid,
+      "test": labels_placeholder_test
+    }
+
+    ops = get_ops(images_placeholder, labels_placeholder)
     child_ops = ops["child"]
     controller_ops = ops["controller"]
 
