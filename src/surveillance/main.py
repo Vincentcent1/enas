@@ -146,7 +146,7 @@ def get_ops(images, labels):
     num_replicas=FLAGS.child_num_replicas,
   )
 
-  if FLAGS.child_fixed_arc is None:
+  if FLAGS.child_fixed_arc is None: # Search for architecture
     controller_model = ControllerClass(
       search_for=FLAGS.search_for,
       search_whole_channels=FLAGS.controller_search_whole_channels,
@@ -227,6 +227,8 @@ def train(autoTrainNN):
 
   g = tf.Graph()
   with g.as_default():
+    images_placeholder =tf.placeholder(tf.float32, [None,227,227])
+    labels_placeholder = labels_placeholder(tf.int32,[None])
     ops = get_ops(images, labels)
     child_ops = ops["child"]
     controller_ops = ops["controller"]
@@ -348,15 +350,20 @@ def train(autoTrainNN):
   if not os.path.exists(log_file):
     os.mknod(log_file)
   arc,acc = best
-  print("Best architecture:")
-  for layer_id in range(FLAGS.child_num_layers):
-    if FLAGS.controller_search_whole_channels:
-      end = start + 1 + layer_id
-    else:
-      end = start + 2 * FLAGS.child_num_branches + layer_id
-    print(np.reshape(arc[start: end], [-1]))
-    start = end
-  print("Validation Accuracy: {:<6.4f}".format(acc))
+
+  with open(log_file, 'a') as f:
+    f.write("Best architecture:")
+
+    start = 0
+    # Formatting the architecture for printing
+    for layer_id in range(FLAGS.child_num_layers):
+      if FLAGS.controller_search_whole_channels:
+        end = start + 1 + layer_id
+      else:
+        end = start + 2 * FLAGS.child_num_branches + layer_id
+      f.write(np.reshape(arc[start: end], [-1]))
+      start = end
+    f.write("Validation Accuracy: {:<6.4f}".format(acc))
 
 
 def main(_):
@@ -381,6 +388,8 @@ def main(_):
 
   utils.print_user_flags()
 
+  # print('Reserving gpu memory...')
+  # tf.Session()
   # Load pickles file
   print('Loading pickled file...')
   with open('/home/yuwei/projects/vincent/pickleRick/allCrops1.pkl') as p_crop:
@@ -400,7 +409,7 @@ def main(_):
   autoTrainNN = AutoTrain()
   combined_1 = zip(allCrops1 + allCrops2, np.concatenate((labels1,labels2)))
   autoTrainNN.addLabelledData(combined_1)
-  train(autoTrainNN)
+  # train(autoTrainNN)
 
 
   # Redirect stdout2 -------------------------------------------------------------------------------------------
@@ -410,11 +419,12 @@ def main(_):
     os.mknod(log_file)
 
   print("Logging to {}".format(log_file))
-  sys.stdout = Logger(log_file)
+  sys.stdout.log = open(log_file, "a") # Change log file
 
   utils.print_user_flags()
 
   # Load pickles file
+  print('Loading pickled file...')
   with open('/home/yuwei/projects/vincent/pickleRick/allCrops3.pkl') as p_crop:
       allCrops3 = cPickle.load(p_crop)    
   with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops1.pkl') as p_crop:
@@ -424,26 +434,27 @@ def main(_):
   autoTrainNN.addLabelledData(combined_2)
   train(autoTrainNN)
 
-  # Redirect stdout3 --------------------------------------------------------------------------------------------
-  print("-" * 80)
-  log_file = os.path.join(FLAGS.output_dir, "stdout3")
-  if not os.path.exists(log_file):
-    os.mknod(log_file)
+  # # Redirect stdout3 --------------------------------------------------------------------------------------------
+  # print("-" * 80)
+  # log_file = os.path.join(FLAGS.output_dir, "stdout3")
+  # if not os.path.exists(log_file):
+  #   os.mknod(log_file)
 
-  print("Logging to {}".format(log_file))
-  sys.stdout = Logger(log_file)
+  # print("Logging to {}".format(log_file))
+  # sys.stdout.log = open(log_file, "a") # Change log file
 
-  utils.print_user_flags()
+  # utils.print_user_flags()
 
-  # Load pickles file
-  with open('/home/yuwei/projects/vincent/pickleRick/brio2/allCrops1.pkl') as p_crop:
-      allCrops1_Brio2 = cPickle.load(p_crop)
-  with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops2.pkl') as p_crop:
-      allCrops2_Brio1 = cPickle.load(p_crop)
+  # # Load pickles file
+  # print('Loading pickled file...')
+  # with open('/home/yuwei/projects/vincent/pickleRick/brio2/allCrops1.pkl') as p_crop:
+  #     allCrops1_Brio2 = cPickle.load(p_crop)
+  # with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops2.pkl') as p_crop:
+  #     allCrops2_Brio1 = cPickle.load(p_crop)
 
-  combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
-  autoTrainNN.addLabelledData(combined_3)
-  train(autoTrainNN)
+  # combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
+  # autoTrainNN.addLabelledData(combined_3)
+  # # train(autoTrainNN)
 
   
 
