@@ -30,6 +30,7 @@ from src.surveillance.micro_child import MicroChild
 sys.path.insert(0,'/home/yuwei/projects/vincent/autoTrain')
 from autoTrain import AutoTrain
 import cPickle
+import pdb
 
 
 flags = tf.app.flags
@@ -227,26 +228,7 @@ def train(autoTrainNN):
 
   g = tf.Graph()
   with g.as_default():
-
-    images_placeholder_train = tf.placeholder(tf.float32,[None, 227, 227])
-    images_placeholder_valid = tf.placeholder(tf.float32,[None, 227, 227])
-    images_placeholder_test = tf.placeholder(tf.float32,[None, 227, 227])
-    images_placeholder = { # dictionary of placeholders since get_ops receive dictionary
-      "train": images_placeholder_train,
-      "valid": images_placeholder_valid,
-      "test": images_placeholder_test
-    }
-
-    labels_placeholder_train = tf.placeholder(tf.int32,[None])
-    labels_placeholder_valid = tf.placeholder(tf.int32,[None])
-    labels_placeholder_test = tf.placeholder(tf.int32,[None])
-    labels_placeholder = { # dictionary of placeholders since get_ops receive dictionary
-      "train": labels_placeholder_train,
-      "valid": labels_placeholder_valid,
-      "test": labels_placeholder_test
-    }
-
-    ops = get_ops(images_placeholder, labels_placeholder)
+    ops = get_ops(images,labels)
     child_ops = ops["child"]
     controller_ops = ops["controller"]
 
@@ -265,6 +247,7 @@ def train(autoTrainNN):
     print("-" * 80)
     print("Starting session")
     config = tf.ConfigProto(allow_soft_placement=True)
+    pdb.set_trace()
     with tf.train.SingularMonitoredSession(
       config=config, hooks=hooks, checkpoint_dir=FLAGS.output_dir) as sess:
         start_time = time.time()
@@ -385,6 +368,7 @@ def train(autoTrainNN):
 
 def main(_):
   # Prepare directory
+  pdb.set_trace()
   print("-" * 80)
   if not os.path.isdir(FLAGS.output_dir):
     print("Path {} does not exist. Creating.".format(FLAGS.output_dir))
@@ -405,8 +389,8 @@ def main(_):
 
   utils.print_user_flags()
 
-  # print('Reserving gpu memory...')
-  # tf.Session()
+  print('Reserving gpu memory...')
+  tf.Session()
   # Load pickles file
   print('Loading pickled file...')
   with open('/home/yuwei/projects/vincent/pickleRick/allCrops1.pkl') as p_crop:
@@ -428,7 +412,6 @@ def main(_):
   autoTrainNN.addLabelledData(combined_1)
   # train(autoTrainNN)
 
-
   # Redirect stdout2 -------------------------------------------------------------------------------------------
   print("-" * 80)
   log_file = os.path.join(FLAGS.output_dir, "stdout2")
@@ -437,8 +420,6 @@ def main(_):
 
   print("Logging to {}".format(log_file))
   sys.stdout.log = open(log_file, "a") # Change log file
-
-  utils.print_user_flags()
 
   # Load pickles file
   print('Loading pickled file...')
@@ -449,32 +430,29 @@ def main(_):
 
   combined_2 = zip(allCrops3 + allCrops1_Brio1, np.concatenate((labels3,labels1_Brio1)))
   autoTrainNN.addLabelledData(combined_2)
+  # train(autoTrainNN)
+
+  # Redirect stdout3 --------------------------------------------------------------------------------------------
+  print("-" * 80)
+  log_file = os.path.join(FLAGS.output_dir, "stdout3")
+  if not os.path.exists(log_file):
+    os.mknod(log_file)
+
+  print("Logging to {}".format(log_file))
+  sys.stdout.log = open(log_file, "a") # Change log file
+
+  utils.print_user_flags()
+
+  # Load pickles file
+  print('Loading pickled file...')
+  with open('/home/yuwei/projects/vincent/pickleRick/brio2/allCrops1.pkl') as p_crop:
+      allCrops1_Brio2 = cPickle.load(p_crop)
+  with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops2.pkl') as p_crop:
+      allCrops2_Brio1 = cPickle.load(p_crop)
+
+  combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
+  autoTrainNN.addLabelledData(combined_3)
   train(autoTrainNN)
-
-  # # Redirect stdout3 --------------------------------------------------------------------------------------------
-  # print("-" * 80)
-  # log_file = os.path.join(FLAGS.output_dir, "stdout3")
-  # if not os.path.exists(log_file):
-  #   os.mknod(log_file)
-
-  # print("Logging to {}".format(log_file))
-  # sys.stdout.log = open(log_file, "a") # Change log file
-
-  # utils.print_user_flags()
-
-  # # Load pickles file
-  # print('Loading pickled file...')
-  # with open('/home/yuwei/projects/vincent/pickleRick/brio2/allCrops1.pkl') as p_crop:
-  #     allCrops1_Brio2 = cPickle.load(p_crop)
-  # with open('/home/yuwei/projects/vincent/pickleRick/brio1/allCrops2.pkl') as p_crop:
-  #     allCrops2_Brio1 = cPickle.load(p_crop)
-
-  # combined_3 = zip(allCrops1_Brio2 + allCrops2_Brio1, np.concatenate((labels1_Brio2,labels2_Brio1)))
-  # autoTrainNN.addLabelledData(combined_3)
-  # # train(autoTrainNN)
-
-  
-
 
 if __name__ == "__main__":
   tf.app.run()

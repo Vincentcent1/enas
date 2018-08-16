@@ -82,7 +82,7 @@ class Model(object):
         seed=self.seed,
         allow_smaller_final_batch=True,
       )
-      self.lr_dec_every = lr_dec_every * self.num_train_batches
+      self.lr_dec_every = lr_dec_every * self.num_train_batches # Cast dimension to in
 
       def _pre_process(x):
         x = tf.pad(x, [[4, 4], [4, 4], [0, 0]])
